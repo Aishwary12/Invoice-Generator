@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tax Invoice</title>
+
+<style>
+body{
+    margin:0;
+    background:#eaeaea;
+    font-family:"Times New Roman", serif;
+}
+
+.page{
+    max-width:900px;
+    width:95%;
+    margin:20px auto;
+    background:#fff;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.header{text-align:center; line-height:1.4;}
+.header b{font-size:20px;}
+
+.page-no{
+    float:right;
+    font-size:13px;
+    margin-top:-18px;
+}
+
+.title{
+    text-align:center;
+    font-weight:bold;
+    margin-top:6px;
+}
+
+.hr{
+    border:0;
+    border-top:1px solid #000;
+    margin:8px 0 14px;
+}
+
+.info{
+    width:100%;
+    font-size:14px;
+}
+.info td{
+    padding:3px 4px;
+}
+.label{
+    font-weight:bold;
+}
+
+.bill{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+    font-size:13.5px;
+}
+
+.bill th{
+    border:1px solid #000;
+    padding:6px 4px;
+    text-align:center;
+}
+
+.bill td{
+    padding:6px 4px;
+    border-bottom:1px dotted #777;
+    vertical-align:top;
+}
+
+.right{text-align:right;}
+.center{text-align:center;}
+.bold{font-weight:bold;}
+
+.bottom{
+    margin-top:10px;
+    font-size:14px;
+}
+
+.net{
+    float:right;
+    text-align:right;
+    margin-top:10px;
+}
+
+.signature{
+    margin-top:60px;
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+<b>{{ hotel_name }}</b><br>
+{{ hotel_address }}<br>
+Phone : {{ hotel_phone }}<br>
+Res. Phone : {{ hotel_res_phone }}<br>
+GSTIN : {{ hotel_gstin }}
+</div>
+
+<div class="title">Tax Invoice</div>
+<div class="page-no">Page 1/1</div>
+<hr class="hr">
+
+<!-- BOOKING INFO -->
+<table class="info">
+<tr>
+<td class="label">Folio No</td><td>: {{ folio_no }}</td>
+<td class="label">Room No</td><td>: {{ room_no }}</td>
+<td class="label">Room Type</td><td>: {{ room_type }}</td>
+</tr>
+
+<tr>
+<td class="label">Bill No</td><td>: {{ bill_no }}</td>
+<td class="label">Room Tariff</td><td>: {{ tariff }}</td>
+<td class="label">Pax</td><td>: {{ pax }}</td>
+</tr>
+
+<tr>
+<td class="label">Guest Name</td>
+<td>: <b>{{ guest_name }}</b></td>
+<td class="label">Food Plan</td><td>: {{ food_plan or "" }}</td>
+<td class="label">Check In Date</td>
+<td>: {{ checkin }}</td>
+</tr>
+
+<tr>
+<td class="label">Co. Name</td><td>: {{ company or "" }}</td>
+<td class="label">Check Out Date</td>
+<td>: {{ checkout }}</td>
+<td></td><td></td>
+</tr>
+
+<tr>
+<td class="label">Address</td>
+<td colspan="5">: {{ guest_address }}</td>
+</tr>
+</table>
+
+<!-- BILL TABLE -->
+<table class="bill">
+<thead>
+<tr>
+<th>Date</th>
+<th>HSN/SAC</th>
+<th>Description</th>
+<th>Amount</th>
+<th>Discount</th>
+<th>CGST%</th>
+<th>CGST Amt</th>
+<th>SGST%</th>
+<th>SGST Amt</th>
+<th>Total</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for row in stay_rows %}
+<tr>
+<td>{{ row.date }}</td>
+<td class="center">{{ row.hsn }}</td>
+<td>Room Tariff</td>
+<td class="right">{{ "%.2f"|format(row.amount) }}</td>
+<td></td>
+<td class="center">2.50</td>
+<td class="right">{{ "%.2f"|format(row.cgst) }}</td>
+<td class="center">2.50</td>
+<td class="right">{{ "%.2f"|format(row.sgst) }}</td>
+<td class="right">{{ "%.2f"|format(row.total) }}</td>
+</tr>
+{% endfor %}
+
+<!-- TOTALS -->
+<tr class="bold">
+<td colspan="3">Tariff & Charges Total</td>
+<td class="right">{{ "%.2f"|format(tariff_total) }}</td>
+<td></td>
+<td></td>
+<td class="right">{{ "%.2f"|format(cgst_total) }}</td>
+<td></td>
+<td class="right">{{ "%.2f"|format(sgst_total) }}</td>
+<td class="right">{{ "%.2f"|format(grand_total) }}</td>
+</tr>
+
+<!-- PAYMENTS -->
+{% for pay in payments %}
+<tr>
+<td colspan="3">{{ pay.date }} {{ pay.method }}</td>
+<td colspan="7" class="right">-{{ "%.2f"|format(pay.amount) }}</td>
+</tr>
+{% endfor %}
+
+<tr class="bold">
+<td colspan="3">Payment Total</td>
+<td colspan="7" class="right">-{{ "%.2f"|format(payment_total) }}</td>
+</tr>
+
+</tbody>
+</table>
+
+<div class="bottom">
+State Code & Name of Supplier : 27-Maharashtra
+</div>
+
+<div class="net">
+<b>Round off</b><br><br>
+<b>Net Balance (Rs.)</b><br>
+<b>{{ "%.2f"|format(net_balance) }}</b>
+</div>
+
+<div style="margin-top:12px;">
+Tariff: [ {{ "%.2f"|format(tariff_total) }} ]  
+Tax: [ {{ "%.2f"|format(cgst_total + sgst_total) }} ]  
+Paid: [ {{ "%.2f"|format(payment_total) }} ]
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="signature">
+<div>Frontoffice Signature</div>
+<div>Guest Signature</div>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tax Invoice</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    margin: 20px;
+}
+
+/* A4 PRINT SIZE */
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+h2{
+    text-align:center;
+    margin:5px 0 10px 0;
+    letter-spacing:1px;
+}
+
+.header{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:5px;
+}
+
+.header-right{
+    text-align:right;
+    font-size:12px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #000;
+    padding:6px;
+    text-align:center;
+}
+
+th{
+    background:#f2f2f2;
+}
+
+/* Guest Info */
+.info td{
+    border:none;
+    text-align:left;
+    padding:3px 6px;
+}
+
+.info{
+    border:1px solid #000;
+    margin-bottom:10px;
+}
+
+/* Bottom Section */
+.bottom-section{
+    display:flex;
+    gap:12px;
+    margin-top:8px;
+}
+
+.summary{
+    width:70%;
+    height: 100%;
+}
+
+.totals{
+    width:30%;
+}
+
+.totals td:first-child{
+    text-align:left;
+}
+
+.totals td:last-child{
+    text-align:right;
+}
+
+.footer{
+    margin-top:25px;
+    font-size:12px;
+}
+
+.signature{
+    margin-top:40px;
+    text-align:right;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HOTEL HEADER -->
+<div class="header">
+    <div>
+        <strong style="font-size:18px;">{{ hotel_name }}</strong><br>
+        {{ hotel_address }}
+    </div>
+
+    <div class="header-right">
+        Phone: {{ hotel_phone }}<br>
+        Reservation: {{ hotel_res_phone }}<br>
+        GSTIN: {{ hotel_gstin }}
+    </div>
+</div>
+
+<hr>
+
+<h2>TAX INVOICE</h2>
+
+<!-- GUEST DETAILS -->
+<table class="info">
+<tr>
+<td><b>Guest Name:</b> {{ guest_name }}</td>
+<td><b>Bill No:</b> {{ bill_no }}</td>
+<td><b>Room No:</b> {{ room_no }}</td>
+</tr>
+
+<tr>
+<td><b>Mobile:</b> {{ mobile }}</td>
+<td><b>Bill Date:</b> {{ bill_date }}</td>
+<td><b>Pax:</b> {{ pax }}</td>
+</tr>
+
+<tr>
+<td><b>Email:</b> {{ email }}</td>
+<td><b>Room Type:</b> {{ room_type }}</td>
+<td><b>Check-In:</b> {{ checkin }}</td>
+</tr>
+
+<tr>
+<td><b>Aadhar No.:</b> {{ adhar }}</td>
+<td><b>Company:</b> {{ company }}</td>
+<td><b>Check-Out:</b> {{ checkout }}</td>
+</tr>
+
+<tr>
+
+<td><b>Address:</b> {{ guest_address }}</td>
+<td colspan="2"></td>
+</tr>
+</table>
+
+<!-- TRANSACTION TABLE -->
+<table>
+<tr>
+<th>Date</th>
+<th>Room</th>
+<th>HSN</th>
+<th>Description</th>
+<th>Particular</th>
+<th>Debit</th>
+<th>Credit</th>
+<th>Balance</th>
+</tr>
+
+{% for row in transactions %}
+<tr>
+<td>{{ row.date }}</td>
+<td>{{ row.room }}</td>
+<td>{{ row.hsn }}</td>
+<td style="text-align:left">{{ row.description }}</td>
+<td style="text-align:left">{{ row.particular }}</td>
+<td>{{ row.debit }}</td>
+<td>{{ row.credit }}</td>
+<td>{{ row.balance }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<!-- SUMMARY + TOTALS -->
+<div class="bottom-section">
+
+    <!-- LEFT SUMMARY -->
+    <table class="summary">
+        <tr>
+            <th>HSN</th>
+            <th>Taxable</th>
+            <th>CGST %</th>
+            <th>CGST</th>
+            <th>SGST %</th>
+            <th>SGST</th>
+            <th>Total Tax</th>
+            <th>Net Amount</th>
+        </tr>
+        <tr>
+            <td>{{ summary.hsn }}</td>
+            <td>{{ summary.taxable }}</td>
+            <td > 2.5 % </td>
+            <td>{{ summary.cgst_amt }}</td>
+            <td > 2.5 % </td>
+            <td>{{ summary.sgst_amt }}</td>
+            <td>{{ summary.total_tax }}</td>
+            <td>{{ summary.net_amount }}</td>
+        </tr>
+    </table>
+
+    <!-- RIGHT TOTALS -->
+    <table class="totals">
+        <tr><td>Reservation Adv</td><td>{{ totals.advance }}</td></tr>
+        <tr><td>Tariff</td><td>{{ totals.tariff }}</td></tr>
+        <tr><td>Total CGST</td><td>{{ totals.cgst }}</td></tr>
+        <tr><td>Total SGST</td><td>{{ totals.sgst }}</td></tr>
+        <tr><th>Total Bill Amount</th><th>{{ totals.bill }}</th></tr>
+        <tr><td>Paid</td><td>{{ totals.paid }}</td></tr>
+        <tr><th>Balance</th><th>{{ totals.balance }}</th></tr>
+    </table>
+
+</div>
+
+<div class="footer">
+• Payment to be made in favour of {{ hotel_name }}<br>
+• We are committed to look after your needs.<br>
+• Hotel is not responsible for loss or damage to personal belongings.<br>
+• Disputes subject to local jurisdiction.<br><br>
+
+<b>WE HOPE YOU ENJOYED YOUR STAY AND WOULD LIKE TO WELCOME YOU BACK</b><br>
+Please remember to drop your room keys at front desk.
+</div>
+
+<div class="signature">
+Authorized Signatory
+</div>
+
+</body>
+</html>

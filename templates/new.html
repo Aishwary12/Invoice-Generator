@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tax Invoice</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#eaeaea;
+    font-family:"Times New Roman", serif;
+}
+
+.page{
+    max-width:900px;
+    width:95%;
+    margin:20px auto;
+    background:#fff;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+/* header */
+.header{text-align:center; line-height:1.35;}
+.header b{font-size:20px;}
+.page-no{float:right; font-size:13px; margin-top:-18px;}
+.title{text-align:center; font-weight:bold;}
+.hr{border:0; border-top:1px solid #000; margin:6px 0 12px;}
+
+.info{width:100%; font-size:14px;}
+.info td{padding:3px 4px;}
+.label{font-weight:bold;}
+
+.bill{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;   /* keeps table inside page */
+    font-size:13.5px;
+}
+
+.bill th{
+    border:1px solid #000;
+    padding:6px 4px;
+    text-align:center;
+    word-wrap:break-word;
+}
+
+.bill td{
+    padding:6px 4px;
+    border-bottom:1px dotted #777;
+    vertical-align:top;
+}
+
+/* balanced widths to fit page */
+.col-date{width:13%}
+.col-hsn{width:9%}
+.col-desc{width:20%}
+.col-amt{width:10%}
+.col-disc{width:8%}
+.col-taxp{width:7%}
+.col-taxamt{width:10%}
+.col-total{width:10%}
+
+.right{text-align:right;}
+.center{text-align:center;}
+.bold{font-weight:bold;}
+
+.bottom{margin-top:10px; font-size:14px;}
+
+.net{
+    float:right;
+    text-align:right;
+    margin-top:10px;
+}
+
+.signature{
+    margin-top:55px;
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<div class="header">
+<b>SHUBHKARTA HOTELS PVT.LTD.</b><br>
+Rukmani Nagar<br>
+Akola, Maharashtra, India-444001<br>
+Phone : 7447775551<br>
+Res. Phone : 9422793472<br>
+GSTIN : 27AAWCS6806P1Z9
+</div>
+
+<div class="title">Tax Invoice</div>
+<div class="page-no">Page 1/1</div>
+<hr class="hr">
+
+<table class="info">
+<tr>
+<td class="label">Folio No</td><td>: F25001858</td>
+<td class="label">Room No</td><td>: 103</td>
+<td class="label">Room Type</td><td>: DELUXE</td>
+</tr>
+<tr>
+<td class="label">Bill No</td><td>: B25001851</td>
+<td class="label">Room Tariff</td><td>: 1360.0000</td>
+<td class="label">Pax</td><td>: 1</td>
+</tr>
+<tr>
+<td class="label">Guest Name</td>
+<td>: <b>MR SHARYASH TARALE</b></td>
+<td class="label">Food Plan</td><td>:</td>
+<td class="label">Check In Date</td><td>: 26-01-2026 05:27</td>
+</tr>
+<tr>
+<td class="label">Co. Name</td><td>:</td>
+<td class="label">Check Out Date</td><td>: 27-01-2026 06:21</td>
+<td></td><td></td>
+</tr>
+<tr>
+<td class="label">Address</td>
+<td colspan="5">: Pune, Maharashtra-411016, India</td>
+</tr>
+</table>
+
+<table class="bill">
+<thead>
+<tr>
+<th class="col-date">Date</th>
+<th class="col-hsn">HSN/SAC</th>
+<th class="col-desc">Description</th>
+<th class="col-amt">Amount</th>
+<th class="col-disc">Discount</th>
+<th class="col-taxp">CGST%</th>
+<th class="col-taxamt">CGST Amt</th>
+<th class="col-taxp">SGST%</th>
+<th class="col-taxamt">SGST Amt</th>
+<th class="col-total">Total</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>26-01-2026</td>
+<td class="center">996311</td>
+<td>Room Tariff</td>
+<td class="right">1,360.00</td>
+<td></td>
+<td class="center">2.50</td>
+<td class="right">34.00</td>
+<td class="center">2.50</td>
+<td class="right">34.00</td>
+<td class="right">1,428.00</td>
+</tr>
+
+<tr>
+<td>26-01-2026</td>
+<td class="center">996332</td>
+<td>Room Service</td>
+<td class="right">19.04</td>
+<td></td>
+<td class="center">2.50</td>
+<td class="right">0.48</td>
+<td class="center">2.50</td>
+<td class="right">0.48</td>
+<td class="right">20.00</td>
+</tr>
+
+<tr class="bold">
+<td colspan="3">Tariff & Charges Total</td>
+<td class="right">1,379.04</td>
+<td></td>
+<td></td>
+<td class="right">34.48</td>
+<td></td>
+<td class="right">34.48</td>
+<td class="right">1,448.00</td>
+</tr>
+
+<tr>
+<td colspan="3">26-01-2026 PHONE PAY()</td>
+<td colspan="7" class="right">-1,428.00</td>
+</tr>
+
+<tr>
+<td colspan="3">27-01-2026 PHONE PAY()</td>
+<td colspan="7" class="right">-20.00</td>
+</tr>
+
+<tr class="bold">
+<td colspan="3">Payment Total</td>
+<td colspan="7" class="right">-1,448.00</td>
+</tr>
+</tbody>
+</table>
+
+<div class="bottom">
+State Code & Name of Supplier : 27-Maharashtra
+</div>
+
+<div class="net">
+<b>Round off</b><br><br>
+<b>Net Balance (Rs.)</b><br>
+<b>.00</b>
+</div>
+
+<div style="margin-top:12px;">
+Tarf: [ 1,360.00 ] RS : [ 19.04 ] Paid: [ 1,448.00 ] Tax : [ 68.96 ]
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="signature">
+    
+<div>Frontoffice Signature</div>
+<div>Guest Signature</div>
+</div>
+
+</div>
+</body>
+</html>

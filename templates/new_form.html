@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice Form</title>
+    <script>
+        function addRow() {
+            const table = document.getElementById("items");
+            const row = table.insertRow();
+
+            row.innerHTML = `
+                <td><input name="date[]" type="date" required></td>
+                <td><input name="description[]" required></td>
+                <td><input name="particular[]" required></td>
+                <td><input name="debit[]" type="number" step="0.01" required></td>
+            `;
+        }
+    </script>
+</head>
+<body>
+
+<h2>Hotel Invoice Entry</h2>
+
+<form method="post" action="/generate">
+
+<h3>Hotels Details</h3>
+Hotel Name: <input name="hotel_name"><br>
+Hotel Address: <input name="hotel_address"><br>
+Hotel Phone: <input name="hotel_phone"><br>
+Hotel Res Phone: <input name="hotel_res_phone"><br>
+Hotel GSTin: <input name="hotel_gstin"><br>
+
+<h3>Guest Details</h3>
+Guest Name: <input name="guest_name"><br>
+Mobile: <input name="mobile"><br>
+Email: <input name="email"><br>
+Address: <input name="guest_address"><br>
+Company: <input name="company"><br><br>
+
+<h3>Stay Details</h3>
+Room No: <input name="room_no">
+Room Type: <input name="room_type">
+Pax: <input name="pax"><br><br>
+Check-in: <input type="datetime-local" name="checkin">
+Check-out: <input type="datetime-local" name="checkout"><br><br>
+
+<h3>Invoice Info</h3>
+Folio No: <input name="folio_no">
+Bill No: <input name="bill_no"><br><br>
+
+<h3>Charges</h3>
+
+<table border="1" id="items">
+<tr>
+    <th>Date</th>
+    <th>Description</th>
+    <th>Particular</th>
+    <th>Amount</th>
+</tr>
+</table>
+
+<br>
+<button type="button" onclick="addRow()">+ Add Row</button>
+
+<br><br>
+Paid Amount: <input name="paid" value="0">
+
+<br><br>
+<button type="submit">Generate Invoice</button>
+
+</form>
+
+</body>
+</html>
