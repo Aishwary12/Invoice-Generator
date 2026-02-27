@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editable 10cm Receipt</title>
+    <style>
+        .bill-editor { width: 10cm; margin: auto; border: 1px solid #000; padding: 10px; font-family: monospace; }
+        input { border: none; border-bottom: 1px solid #eee; width: 100%; font-family: inherit; }
+        .center { text-align: center; }
+        .dotted { border-top: 1px dashed #000; margin: 5px 0; }
+        table { width: 100%; font-size: 12px; }
+        .btn-box { text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="bill-editor" id="bill">
+        <div class="center">
+            <input type="text" id="h_name" value="JAIN RESTRO" class="center" style="font-weight:bold">
+            <input type="text" id="addr1" value="JHATARPETH CHOWK, OPPOSITE OF HDFC BANK, AKOLA," class="center">
+            <input type="text" id="addr2" value="MAHARASTRA 444005" class="center">
+            <input type="text" id="state" value="State: 27-Maharashtra" class="center">
+            <input type="text" id="phone" value="9766005860" class="center">
+        </div>
+        
+        <div class="dotted"></div>
+        <div class="center">Tax Invoice</div>
+        <div class="dotted"></div>
+
+        <table style="margin-bottom: 10px;">
+            <tr><td><input type="text" id="t_no" value="111TABLE"></td><td align="right">Date: <input type="text" id="date" value="19/02/2026" style="width:80px"></td></tr>
+            <tr><td>Bill To: <input type="text" id="b_to" value="India"></td><td align="right">Time: <input type="text" id="time" value="10:16 PM" style="width:80px"></td></tr>
+            <tr><td>Ship To: <input type="text" id="s_to" value="R-5"></td><td align="right">Inv No: <input type="text" id="inv_no" value="8908" style="width:80px"></td></tr>
+        </table>
+
+        <div class="dotted"></div>
+        <table id="itemTable">
+            <thead><tr><th>#</th><th>Name</th><th>Qty</th><th>Price</th><th>Amt</th></tr></thead>
+            <tbody id="items">
+                </tbody>
+        </table>
+        <div class="dotted"></div>
+        
+        <div style="text-align: right;">
+            Sub Total: <span id="st">335</span><br>
+            <b>Total: <span id="gt">335</span></b>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <button onclick="addRow()">Add Item</button>
+        <button onclick="download()">Download 10cm PDF</button>
+    </div>
+
+    <script>
+        function addRow() {
+            const row = `<tr><td>-</td><td><input type="text" class="n"></td><td><input type="number" class="q" oninput="calc()"></td><td><input type="number" class="p" oninput="calc()"></td><td class="a">0</td></tr>`;
+            document.getElementById('items').insertAdjacentHTML('beforeend', row);
+        }
+
+        function calc() {
+            let total = 0;
+            document.querySelectorAll('#items tr').forEach(r => {
+                const q = r.querySelector('.q').value || 0;
+                const p = r.querySelector('.p').value || 0;
+                const a = q * p;
+                r.querySelector('.a').innerText = a;
+                total += a;
+            });
+            document.getElementById('st').innerText = total;
+            document.getElementById('gt').innerText = total;
+        }
+
+        async function download() {
+            const items = Array.from(document.querySelectorAll('#items tr')).map(r => ({
+                name: r.querySelector('.n').value,
+                qty: r.querySelector('.q').value,
+                price: r.querySelector('.p').value,
+                amount: r.querySelector('.a').innerText
+            }));
+
+            const data = {
+                hotel_name: document.getElementById('h_name').value,
+                address_line1: document.getElementById('addr1').value,
+                address_line2: document.getElementById('addr2').value,
+                state_info: document.getElementById('state').value,
+                phone: document.getElementById('phone').value,
+                table_no: document.getElementById('t_no').value,
+                bill_to: document.getElementById('b_to').value,
+                ship_to: document.getElementById('s_to').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                invoice_no: document.getElementById('inv_no').value,
+                items: items,
+                total_qty: items.length,
+                sub_total: document.getElementById('st').innerText,
+                grand_total: document.getElementById('gt').innerText
+            };
+
+            const res = await fetch('/download_pdf', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+            const result = await res.json();
+            window.open(result.url);
+        }
+    </script>
+</body>
+</html>

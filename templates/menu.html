@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover-Animated Navigation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #8327E7; /* Matches purple background */
+            font-family: 'SF Pro Display', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .navigation {
+            width: 400px;
+            height: 70px;
+            background: black; /* Matches black nav bar */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        .navigation ul {
+            display: flex;
+            width: 350px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navigation ul li {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            z-index: 1;
+        }
+
+        .navigation ul li a {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .navigation ul li a .icon {
+            font-size: 1.5rem;
+            color: white; /* Default white icons */
+            transition: 0.5s;
+            z-index: 10;
+        }
+
+        /* --- Hover Logic --- */
+
+        /* Lift the icon on hover */
+        .navigation ul li:hover a .icon {
+            transform: translateY(-35px);
+            color: black; /* Icon turns black when lifted */
+        }
+
+        /* The black circle behind the icon */
+        .icon-bg {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: black;
+            border-radius: 50%;
+            opacity: 0;
+            transition: 0.5s;
+            top: 7px;
+        }
+
+        .navigation ul li:hover a .icon-bg {
+            opacity: 1;
+            transform: translateY(-37px);
+        }
+
+        /* --- The SVG Curve Indicator --- */
+        .indicator {
+            position: absolute;
+            top: -50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            transition: 0.5s;
+            z-index: -1;
+            opacity: 0; /* Hidden until a hover happens */
+        }
+
+        .navigation ul:hover .indicator {
+            opacity: 1;
+        }
+
+        .curve-svg {
+            position: absolute;
+            top: 36px;
+            width: 100%;
+            transform: scale(1.1);
+        }
+
+        /* Positioning the curve based on which LI is hovered */
+        .navigation ul li:nth-child(1):hover ~ .indicator { transform: translateX(0px); }
+        .navigation ul li:nth-child(2):hover ~ .indicator { transform: translateX(70px); }
+        .navigation ul li:nth-child(3):hover ~ .indicator { transform: translateX(140px); }
+        .navigation ul li:nth-child(4):hover ~ .indicator { transform: translateX(210px); }
+        .navigation ul li:nth-child(5):hover ~ .indicator { transform: translateX(280px); }
+
+    </style>
+</head>
+<body>
+
+    <div class="navigation">
+        <ul>
+            <li><a href="/hotel"><span class="icon-bg"></span><span class="icon">🏠</span></a></li>
+            <li><a href="/form"><span class="icon-bg"></span><span class="icon">🔍</span></a></li>
+            <li><a href="/hotelview"><span class="icon-bg"></span><span class="icon">➕</span></a></li>
+            <li><a href="#"><span class="icon-bg"></span><span class="icon">❤️</span></a></li>
+            <li><a href="#"><span class="icon-bg"></span><span class="icon">👤</span></a></li>
+            
+            <div class="indicator">
+                <svg class="curve-svg" viewBox="0 0 100 50">
+                    <path d="M0,50 C15,50 15,0 50,0 C85,0 85,50 100,50 L0,50 Z" fill="black"></path>
+                </svg>
+            </div>
+        </ul>
+    </div>
+
+</body>
+</html>
